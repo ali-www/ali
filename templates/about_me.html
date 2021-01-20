@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div class="container">
+    <br>
+    <hr>
+    <div class="card mb-3">
+        <div class="row g-0">
+            {% for me in about_me %}
+            <div class="col-md-4">
+                <img src="{{me.photo.url}}" class="m-2 shadow-lg p-3 mb-5 bg-white rounded" height=300 width=400
+                    alt="...">
+            </div>
+
+            <div class="col-md-8">
+                <div class="card-body">
+
+                    <h3 class="text-center text-capitalize"><strong>{{ me.first_name}}</strong>
+                        <strong>{{ me.last_name}}</strong>
+                    </h3>
+
+                    <p class="text-center"><small class="text-muted">{{ me.email}}</small></p>
+                    <p class="text-center"><small class="text-muted">{{ me.phone}}</small></p>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="shadow p-3 mb-5 bg-white rounded">{{ me.body}}</div>
+            </div>
+
+
+            {% endfor %}
+        </div>
+    </div>
+    <!----============================================================== start contact  ============================-->
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+
+        {{ form.as_p }}
+
+        <input type="submit" value="Submit">
+    </form>
+    <!----======================================================================= end contact ===================-->
+
+</div>
+
+
+
+
+{% endblock body %}

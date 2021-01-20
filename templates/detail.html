@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block body %}
+<style>
+  .red {
+    color: red;
+  }
+
+  .blue {
+    color: blue;
+  }
+</style>
+
+<h3 class="text-center text-uppercase">detail</h3>
+<hr>
+
+
+
+<h3 class=" text-uppercase">{{ post.title }}</h3>
+<p class=" ">{{ post.body }}</p>
+<hr>
+
+<a href="{% url 'home'  %}" class="btn btn-outline-dark">BACK</a>
+<a href="{% url 'delete_post' post.pk %}" class="btn btn-outline-danger">Delete</a>
+<!---=========================================================================================================-->
+{% if request.user in post.heart.all %}
+<a href="{% url 'like' post.pk %}"><i class="fas fa-heart red"></i></a>
+{% else %}
+<a href="{% url 'like' post.pk %}"> <i class="fas fa-heart blue"></i> </a>
+{% endif %}
+<!-----=======================================================================================================-->
+
+<div class="container">
+  <div class="row">
+
+    <div class="col">
+
+
+      <h1>Add Comment</h1>
+
+      <form action="." method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Comment add">
+      </form>
+
+    </div>
+
+
+
+
+    <div class="col">
+      {% for comment in post.comments.all %}
+      <div class="shadow-lg p-3 mb-3 bg-white rounded">
+        <p class="text-uppercase   text-decoration-underline">{{ comment.name }} : at {{ comment.date_added }}</p>
+        <p class="fw-lighter">{{ comment.body }}.</p>
+        <a href="{% url 'delete_comment' comment.pk %}" class="btn btn-outline-danger">Delete</a>
+      </div>
+
+
+
+      {% endfor %}
+    </div>
+
+
+  </div>
+</div>
+
+
+
+
+
+
+
+{% endblock body %}
+<!--------------------------_==================================================-->
+
+
+
+<!-----==========================00-->
+<div class="d-grid gap-3  mb-2">
+  <div class="p-2 bg-light border border-success  ">
+    <p> {{ comment.name }} : at {{ comment.date_added }}</p>
+    <p>{{ comment.body }}</p>
+  </div>
+
+</div>

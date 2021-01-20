@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+
+
+
+
+
+<hr>
+
+
+
+<!----==================================================================== start video ======================-->
+<div class="card mb-3">
+  <div class="row g-0">
+    {% for v in video %}
+    <div class="col-md-4">
+      <video controls>
+        <source src="{{v.video.url}}" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="col-md-8">
+      <div class="card-body">
+
+        <h3 class="text-center text-capitalize"><strong>{{ v.title}}</strong>
+
+        </h3>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+<!--======================================================================= end video =============================-->
+<div class="row">
+  {% for post in qu %}
+  <div class="col-lg-6  mb-4  ">
+
+
+    <div class="d-flex position-relative">
+      <img src="{{ post.img.url }}" class="flex-shrink-0 me-3" width=200 height=200 alt="...">
+      <div>
+
+        <p class="text-uppercase fw-bold">{{ post.title }}</p>
+        <small class="text-muted">{{ post.created }}</small>
+        <p>{{ post.body|slice:':100' }} <a href="{% url 'detail' post.pk %}"
+            class="text-decoration-none">Read..Moer..</a></p>
+
+        <!---====================================================================== start form like-->
+        <form action="{% url 'like_post' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="hidden" name="post_id" value="{{ post.id }}">
+          {% if user not in post.liked.all %}
+          <button type="submit" class="btn btn-outline-success">Like</button>
+          {% else %}
+          <button type="submit" class="btn btn-outline-danger">Unlike</button>
+          {% endif %}
+          <small class="text-muted">( {{ post.liked.all.count }} : Likes)</small>
+        </form>
+
+        <!---====================================================================== end form like-->
+
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<!----============================================================== start subscribe ============================-->
+
+<form action="" method="post">
+  {% csrf_token%}
+  <input type="email" name="email" id="" placeholder="type your email address">
+  <input type="submit" value="Subscribe">
+</form>
+<!----======================================================================= end subscribe ===================-->
+
+
+</div>
+<br>
+
+
+
+
+{% endblock body %}
